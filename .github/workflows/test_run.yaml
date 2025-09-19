@@ -11,14 +11,18 @@ description:
 on:
   pull_request:
     branches:
-      - build-action-implementation
+      - build-action-implementation-remove
     paths:
       - '.github/workflows/test_run.yaml'
   push:
     branches:
-      - build-action-implementation
+      - build-action-implementation-remove
     paths:
       - '.github/workflows/test_run.yaml'
+
+env:
+  TEST_ENV_VALUE_1: test_value1
+  TEST_ENV_VALUE_2: test_value2
 
 jobs:
   job_1:
