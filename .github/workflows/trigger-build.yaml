@@ -12,11 +12,9 @@ on:
   push:
     branches:
       - master
-      - build-action-implementation
   pull_request:
     branches:
       - master
-      - build-action-implementation
 
 jobs:
   build:

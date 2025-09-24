@@ -2,8 +2,9 @@
 
 # Search for the triggered log workflow using the id in the run-name
 run_name="$1"
-title_id=$(echo "$run_name" | cut -d "-" -f2 | sed 's#"##g' \ |
+title_id=$(echo "$run_name" | cut -d "_" -f2 | sed 's#"##g' \ |
             sed 's#,##g' | sed 's# ##g' | awk 'NR==1{print $NF}')
+
 run_search=""
 while [[ $(echo "$run_search" | grep ^'      "name":' | \
             cut -d "-" -f2 | sed 's#"##g' | sed 's#,##g' | \
@@ -15,9 +16,11 @@ while [[ $(echo "$run_search" | grep ^'      "name":' | \
                 -H "Accept: application/vnd.github+json" \
                 -H "Authorization: Bearer ${GITHUB_TOKEN}" \
                 -H "X-GitHub-Api-Version: 2022-11-28" \
-                https://api.github.com/repos/${GITHUB_REPOSITORY}actions/workflows/log-response.yml/runs)
+                https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/log-response.yml/runs)
 done
 
-    # Check status of the run by getting private run id
-    run_id=$(echo "$run_search" | grep ^'      "id":' | awk 'NR==1{print $NF}' | cut -d ":" -f2 | sed 's#,##g')
+# Check status of the run by getting private run id
+run_id=$(echo "$run_search" | grep ^'      "id":' | awk 'NR==1{print $NF}' | cut -d ":" -f2 | sed 's#,##g')
+if [[ ! -z "${run_id}" ]]; then
     echo -e "\nCatched the triggered log workflow! Workflow run URL: [ https://github.com/${GITHUB_REPOSITORY}/actions/runs/${run_id} ]"
+fi
