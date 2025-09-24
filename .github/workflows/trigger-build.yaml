@@ -16,6 +16,7 @@ on:
   pull_request:
     branches:
       - master
+      - build-action-implementation
 
 jobs:
   build:
@@ -39,12 +40,8 @@ jobs:
       - name: Trigger Build
         shell: sh
         run: |
-          ./CI/trigger-workflow.sh
+          echo "Build triggered! Waiting for response ..."
         env:
-          PRIVATE_ORG: ${{ secrets.PRIVATE_ORG }}
-          PRIVATE_REPO: ${{ secrets.PRIVATE_REPO }}
-          PRIVATE_WORKFLOW: ${{ secrets.PRIVATE_WORKFLOW }}
-          GH_TRIGGER_TOKEN: ${{ secrets.GH_TRIGGER_TOKEN }}
           VIVADO_VERSION: ${{ steps.build-versions.outputs.vivado_version }}
           PACKAGE_VERSION: ${{ steps.build-versions.outputs.package_version }}
-          TRIGGER_ID: ${{ github.run_id }}      # current workflow run id to detect it on further requests
+          TRIGGER_ID: ${{ github.run_id }}      # current workflow run id to detect it in logs
