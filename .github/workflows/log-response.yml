@@ -1,0 +1,31 @@
+##
+# Copyright (c) 2025 Analog Devices, Inc. All Rights Reserved.
+# This software is proprietary and confidential to Analog Devices, Inc. and its licensors.
+##
+
+name: 'Log results from triggered workflow'
+
+run-name: ${ inputs.run-name }}
+
+on:
+    workflow_dispatch:
+        inputs:
+            run-name:
+                required: true
+                type: string
+            log-message:
+                required: true
+                type: string
+
+description:
+  'Workflow to log results from m2k external trigger'
+
+jobs:
+  get-response:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get response
+        shell: sh
+        run: |
+            echo "${{ inputs.log-message }}"
+        
