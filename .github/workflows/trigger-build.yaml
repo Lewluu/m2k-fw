@@ -22,24 +22,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Update versions
-        shell: sh
-        id: build-versions
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Get external status
         run: |
-          timestamp=$(date '+%d-%m-%Y_%H-%M-%S')
-          package_version=$(echo "${timestamp}.m2k-fw")
-          vivado_version=$(cat Makefile | awk 'NR==1{print $NF}')
-
-          echo "Package Version: ${package_version}"
-          echo "Vivado Version: ${vivado_version}"
-
-          echo "package_version=${package_version}" >> $GITHUB_OUTPUT
-          echo "vivado_version=${vivado_version}" >> $GITHUB_OUTPUT
-      - name: Trigger Build
-        shell: sh
-        run: |
-          echo "Build triggered! Waiting for response ..."
-        env:
-          VIVADO_VERSION: ${{ steps.build-versions.outputs.vivado_version }}
-          PACKAGE_VERSION: ${{ steps.build-versions.outputs.package_version }}
-          TRIGGER_ID: ${{ github.run_id }}      # current workflow run id to detect it in logs
+          node CI/app/dist/index.js
