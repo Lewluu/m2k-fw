@@ -34,11 +34,17 @@ jobs:
             echo "${log_message}"
             sleep 7200   # wait for maximum 2 hours for the run to complete
         continue-on-error: true
-      - name: Redirect to log workflow
-        if: cancelled()
-        shell: sh
-        run: |
-            echo "Run finished!"
-
-            # Get workflow run URL of log response workflow
-            ./CI/get-log-workflow.sh "${{ inputs.run-name }}"
+  set-successful:
+    if: ${{ cancelled() }}
+    needs: get-response
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set workflow run as successful
+        run: exit 0
+  set-failed:
+    if: ${{ !cancelled() }}
+    needs: get-response
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set workflow run as failed
+        run: exit 1
