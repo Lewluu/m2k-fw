@@ -16,6 +16,11 @@ on:
     branches:
       - master
 
+env:
+  GH_OS_TOKEN: ${{ secrets.GH_OS_DISPATCH }}
+  GITHUB_RUN_ID: ${{ github.run_id }}
+  HDL_PROJECT_NAME: m2k-fw
+
 jobs:
   build:
     runs-on: ubuntu-latest

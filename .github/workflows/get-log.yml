@@ -21,10 +21,10 @@ description:
   'Workflow to log results from m2k external trigger'
 
 jobs:
-  get-response:
+  get-log:
     runs-on: ubuntu-latest
     steps:
-      - name: Get response
+      - name: Get log
         shell: sh
         run: |
             log_message=$(echo ${{ inputs.log-message }} | sed "s#_# #g")
