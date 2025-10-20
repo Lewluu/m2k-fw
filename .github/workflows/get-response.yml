@@ -32,8 +32,7 @@ jobs:
         run: |
             log_message=$(echo ${{ inputs.log-message }} | sed "s#_# #g")
             echo "${log_message}"
-            # sleep 7200   # wait for maximum 2 hours for the run to complete
-            sleep 10  # temp reduce wait time for testing
+            sleep 7200   # wait for maximum 2 hours for the run to complete
         continue-on-error: true
   set-sucessful:
     if: ${{ cancelled() }}
