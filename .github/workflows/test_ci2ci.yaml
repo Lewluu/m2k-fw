@@ -14,7 +14,7 @@ on:
       - build-action-implementation
     paths:
       - '.github/workflows/test_ci2ci.yaml'
-      - 'CI/app/*'
+      - 'CI/app/**'
 
 env:
   HDL_PROJECT_NAME: m2k-fw
