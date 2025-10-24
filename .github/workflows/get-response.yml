@@ -24,18 +24,27 @@ jobs:
   get-response:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Get response
         shell: sh
         timeout-minutes: 720
         run: |
-            echo "${{ inputs.log-message }}"
+            log_message=$(echo ${{ inputs.log-message }} | sed "s#_# #g")
+            echo "${log_message}"
             sleep 7200   # wait for maximum 2 hours for the run to complete
         continue-on-error: true
-      - name: Redirect to log workflow
-        if: cancelled()
-        shell: sh
-        run: |
-            echo "Run finished!"
-
-            # Get workflow run URL of log response workflow
-            ./CI/get-response-workflow.sh "${{ inputs.run-name }}"
+  set-successful:
+    if: ${{ cancelled() }}
+    needs: get-response
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set workflow run as successful
+        run: exit 0
+  set-failed:
+    if: ${{ !cancelled() }}
+    needs: get-response
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set workflow run as failed
+        run: exit 1

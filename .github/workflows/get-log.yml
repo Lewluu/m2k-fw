@@ -5,27 +5,28 @@
 
 name: 'Log results from triggered workflow'
 
-run-name: ${ inputs.run-name }}
+run-name: ${{ inputs.run-name }}
 
 on:
-    workflow_dispatch:
-        inputs:
-            run-name:
-                required: true
-                type: string
-            log-message:
-                required: true
-                type: string
+  workflow_dispatch:
+    inputs:
+      run-name:
+        required: true
+        type: string
+      log-message:
+        required: true
+        type: string
 
 description:
   'Workflow to log results from m2k external trigger'
 
 jobs:
-  get-response:
+  get-log:
     runs-on: ubuntu-latest
     steps:
-      - name: Get response
+      - name: Get log
         shell: sh
         run: |
-            echo "${{ inputs.log-message }}"
+            log_message=$(echo ${{ inputs.log-message }} | sed "s#_# #g")
+            echo "${log_message}"
         
