@@ -10,7 +10,6 @@ on:
         paths:
             - ".github/workflows/trigger-sync.yml"
 
-
 jobs:
     test-sync:
         runs-on: ubuntu-latest
