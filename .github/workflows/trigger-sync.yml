@@ -1,0 +1,24 @@
+name: Trigger sync
+
+description:
+    'Trigger external sync workflow.'
+
+on:
+    pull_request:
+        branches:
+            - master
+        paths:
+            - ".github/workflows/trigger-sync.yml"
+
+
+jobs:
+    test-sync:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Test sync
+              shell: sh
+              run: |
+                echo "Sync signal sent!"
+
+                
+                

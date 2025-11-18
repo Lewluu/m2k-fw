@@ -1,0 +1,25 @@
+name: Get sync
+
+description:
+    'Testing sync output gathered from external resources. Data gathered is a log zip file.'
+
+on:
+    workflow_dispatch:
+        inputs:
+            logs-data:
+                type: string
+                required: true
+
+jobs:
+    test-sync:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Log sync data
+              shell: sh
+              run: |
+                echo "${{ inputs.logs-data }}"
+
+                
+                
